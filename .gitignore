@@ -1,0 +1,10 @@
+# .gitignore for .NET MAUI
+bin/
+obj/
+*.user
+*.suo
+*.log
+*.vscode
+
+*.sln.docstates
+project.lock.json
