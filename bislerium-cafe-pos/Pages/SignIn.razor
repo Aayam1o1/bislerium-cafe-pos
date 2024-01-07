@@ -1,0 +1,80 @@
+@page "/"
+@layout EmptyLayout
+
+<style>
+    body {
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    h3 {
+        color: #4a4a4a;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    form {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+        width: 450px;
+    }
+
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    button[type="submit"] {
+        width: 40%;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #3f91ff;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #2e84e1;
+        }
+</style>
+
+
+
+<EditForm Model="loginModel" OnValidSubmit="HandleValidSubmit">
+    <h3>Login</h3>
+    <InputText type="text" id="username" @bind-Value="loginModel.Username" placeholder="Username" />
+    <InputText type="password" id="password" @bind-Value="loginModel.Password" placeholder="Password" />
+
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    [Inject] private NavigationManager Navigation { get; set; }
+
+    private void HandleValidSubmit()
+    {
+        // Redirect to the dashboard
+        Navigation.NavigateTo("/dashboard");
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+}
