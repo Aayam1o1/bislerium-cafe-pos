@@ -1,4 +1,7 @@
 @page "/"
+@inject NavigationManager Navigation
+@inject UserServices UserServices
+
 @layout EmptyLayout
 
 <style>
@@ -17,24 +20,8 @@
         margin-bottom: 25px;
     }
 
-    form {
-        background-color: #ffffff;
-        padding: 30px;
-        border-radius: 5px;
-        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
-        width: 450px;
-    }
 
-    input[type="text"], input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin: 10px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        outline: none;
-    }
-
-    button[type="submit"] {
+    button {
         width: 40%;
         padding: 10px;
         border: none;
@@ -43,38 +30,75 @@
         color: #ffffff;
         font-weight: bold;
         cursor: pointer;
-        margin: 10px;
+        margin-left: 2px;
+        margin-top: 15px;
         transition: background-color 0.2s;
     }
 
-        button[type="submit"]:hover {
-            background-color: #2e84e1;
-        }
+    button:hover {
+        background-color: #2e84e1
+    }
 </style>
 
 
+@Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
-<EditForm Model="loginModel" OnValidSubmit="HandleValidSubmit">
-    <h3>Login</h3>
-    <InputText type="text" id="username" @bind-Value="loginModel.Username" placeholder="Username" />
-    <InputText type="password" id="password" @bind-Value="loginModel.Password" placeholder="Password" />
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <p>@_errorMessage</p>
+}
+<div class="border border-light shadow-lg w-[1000px] px-8 py-10">
+        <h3>Login</h3>
 
-    <button type="submit">Login</button>
-</EditForm>
+        <MudTextField Variant="Variant.Outlined" @bind-Value="_username" Label="User name" T="string"/>
+        <MudTextField Variant="Variant.Outlined" @bind-Value="_password" Label="Password" T="string" InputType="InputType.Password" />
+        <button class="button" @onclick="ManageSignIn">
+            Login
+        </button>
+    </div>
+<h2>
+    @_currentUser?.Username <br />
+    @_currentUser?.Password <br />
+    @_currentUser?.Role
+</h2>
+
 
 @code {
-    private LoginModel loginModel = new LoginModel();
-    [Inject] private NavigationManager Navigation { get; set; }
+    private string _username { get; set; } = "username";
+    private string _password { get; set; } = "password";
+    private string _role { get; set; } = "Admin";
+  
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    private User _currentUser { get; set; }
 
-    private void HandleValidSubmit()
+    private string _errorMessage = "";
+    private string _successMessage = "";
+
+    private void ManageSignIn()
     {
-        // Redirect to the dashboard
-        Navigation.NavigateTo("/dashboard");
+        try
+        {
+            if(string.IsNullOrEmpty(_password) || string.IsNullOrEmpty(_username))
+            {
+                _errorMessage = "Please Fill all the fields";
+                return;
+            }
+            _currentUser = UserServices.SignInUser(_password, _username);
+            _globalState.CurrentUser = _currentUser;
+
+            Navigation.NavigateTo("/dashboard");
+
+            _username = "";
+            _errorMessage = "";
+            _successMessage = "Login was sucessfull.";
+            _password = "";
+        }
+        catch (Exception a)
+        {
+            _errorMessage = a.Message;
+            Console.WriteLine(a);
+        }
     }
 
-    public class LoginModel
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
 }

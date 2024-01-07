@@ -1,7 +1,50 @@
 ﻿@page "/coffee"
+@using System.Net.Http.Json
+@inject HttpClient httpClient
 
-<h3>Coffe</h3>
 
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Coffee</MudText>  
+        
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>S No</MudTh>
+        <MudTh>Coffee</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Action</MudTh>
+    </HeaderContent>
+    
+</MudTable>
+
+    <div class="d-flex flex-wrap mt-4">
+        <MudSwitch @bind-Checked="@hover" Color="Color.Primary">Hover</MudSwitch>
+        <MudSwitch @bind-Checked="@dense" Color="Color.Secondary">Dense</MudSwitch>
+        <MudSwitch @bind-Checked="@striped" Color="Color.Tertiary">Striped</MudSwitch>
+        <MudSwitch @bind-Checked="@bordered" Color="Color.Warning">Bordered</MudSwitch>
+        <MudSpacer />
+        <div style="min-width:200px;">
+            <MudText Inline="true" Class="align-self-center"></MudText>
+        </div>
+    </div>
 @code {
+
+
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+
+    private bool isUserStaff { get; set; }
+
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private string searchString1 = "";
+    private string selectedItem1 = null;
+   
+
+    private IEnumerable<Coffee> Elements = new List<Coffee>();
+
 
 }

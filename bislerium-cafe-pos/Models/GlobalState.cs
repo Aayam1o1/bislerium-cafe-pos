@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace bislerium_cafe_pos.Models
 {
-    public class User
+    public class GlobalState
     {
-        public string Username { get; set; }
-        public string Role { get; set; }
-        public string Password { get; set; }
+        public User CurrentUser { get; set; }
     }
 }

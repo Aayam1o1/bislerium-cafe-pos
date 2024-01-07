@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace bislerium_cafe_pos.Models
 {
-    public class User
+    public class Coffee
     {
-        public string Username { get; set; }
-        public string Role { get; set; }
-        public string Password { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string CoffeeName { get; set; }
+        public double Price { get; set; }
     }
 }

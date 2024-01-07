@@ -7,6 +7,12 @@
 <MudLayout>
     @* including body *@
     <CascadingValue Value="this">
-        @Body
+        <CascadingValue Value="_globalState">
+            @Body
+        </CascadingValue>
     </CascadingValue>
 </MudLayout>
+
+@code{
+    private GlobalState _globalState = new();
+}

@@ -1,6 +1,7 @@
-﻿using bislerium_cafe_pos.Data;
+﻿using bislerium_cafe_pos.Services;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+
 
 namespace bislerium_cafe_pos
 {
@@ -21,11 +22,11 @@ namespace bislerium_cafe_pos
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
-#endif
+#endif  
             builder.Services.AddMudServices();
-            builder.Services.AddSingleton<WeatherForecastService>();
-            
-          
+            builder.Services.AddSingleton<UserServices>();
+
+
             return builder.Build();
         }
     }
