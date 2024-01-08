@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bislerium-cafe-pos", "bislerium-cafe-pos\bislerium-cafe-pos.csproj", "{39CEE725-0BF4-4924-84EB-22D03B0B1579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bislerium-cafe-pos", "bislerium-cafe-pos\bislerium-cafe-pos.csproj", "{39CEE725-0BF4-4924-84EB-22D03B0B1579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

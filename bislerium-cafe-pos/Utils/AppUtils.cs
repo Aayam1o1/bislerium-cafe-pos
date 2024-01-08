@@ -10,7 +10,12 @@ namespace bislerium_cafe_pos.Utils
     {
         public static string GetDesktopDirectoryPath()
         {
-            return Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer), "Bislerium");
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
         }
 
         public static string GetAppUsersFilePath()

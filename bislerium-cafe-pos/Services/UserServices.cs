@@ -17,7 +17,7 @@ namespace bislerium_cafe_pos.Services
             {
                 Username = "admin",
                 Password = "admin",
-                Role = "admin",
+                Role = "admin"
             },
             new User()
             {

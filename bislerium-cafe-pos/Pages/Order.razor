@@ -1,0 +1,65 @@
+﻿@page "/order"
+@inject CoffeeServices CoffeeServices
+
+
+
+<h1>Order the coffee</h1>
+
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Coffee</MudText>
+        <MudSpacer />
+        @* <MudTextField Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Coffee Name</MudTh>
+        <MudTh>Item Type</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Quantity</MudTh>
+        <MudTh>Total</MudTh>
+        <MudTh>Action</MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Coffee Name"></MudTd>
+            <MudTd DataLabel="Item Ordered Type"></MudTd>
+            <MudTd DataLabel="Price"></MudTd>
+            <MudTd DataLabel="Quantity">
+                <MudIconButton Icon="@Icons.Material.Filled.Remove" aria-label="subtract"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="add"></MudIconButton>
+            </MudTd>
+            <MudTd DataLabel="Total"></MudTd>
+            <MudTd DataLabel="Action">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete"></MudIconButton>
+            
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+
+
+
+@code {
+
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    // private string searchString1 = "";
+    // private string selectedItem1 = null;
+
+    private IEnumerable<Coffee> Elements = new List<Coffee>();
+
+    protected override void OnInitialized()
+    {
+        Elements = CoffeeServices.GetCoffeeTableFromJson();
+        // isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
+        // _globalState.AppBarTitle = "Items";
+    }
+}

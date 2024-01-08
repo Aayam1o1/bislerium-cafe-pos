@@ -24,7 +24,7 @@ namespace bislerium_cafe_pos.Services
             new() { CoffeeName = "Turkish Coffee", Price = 130.0 }
         };
 
-        //ads new coffe and save it
+        //add new coffe and save it
         public List<Coffee> AddCoffee(String coffeeName, double price)
         {
             Coffee coffee = new()
@@ -32,7 +32,7 @@ namespace bislerium_cafe_pos.Services
                 CoffeeName = coffeeName,
                 Price = price
             };
-            List<Coffee> coffeeTable = GetCoffeeListFromJson();
+            List<Coffee> coffeeTable = GetCoffeeTableFromJson();
 
             coffeeTable.Add(coffee);
             SaveCoffeeTableInJson(coffeeTable);
@@ -59,7 +59,7 @@ namespace bislerium_cafe_pos.Services
             File.WriteAllText(coffeeTableFilePath, jsonFile);
         }
         //retrive coffee tbale form json
-        public List<Coffee> GetCoffeeListFromJson()
+        public List<Coffee> GetCoffeeTableFromJson()
         {
             string coffeeTableFilePath = AppUtils.GetCoffeeFilePath();
 
@@ -75,8 +75,9 @@ namespace bislerium_cafe_pos.Services
         //if there is no json file creates new json file
         public void SeedCoffeeDetails()
         {
-            List<Coffee> coffeeTable = GetCoffeeListFromJson();
+            List<Coffee> coffeeTable = GetCoffeeTableFromJson();
 
+            //SaveCoffeeTableInJson(_coffeeTable);
             if (coffeeTable.Count == 0)
             {
                 SaveCoffeeTableInJson(_coffeeTable);
@@ -86,7 +87,7 @@ namespace bislerium_cafe_pos.Services
         //retrive cofee by id from json
         public Coffee GetCoffeeDataById(String coffeeID)
         {
-            List<Coffee> coffeeTable = GetCoffeeListFromJson();
+            List<Coffee> coffeeTable = GetCoffeeTableFromJson();
             Coffee coffee = coffeeTable.FirstOrDefault(coffee => coffee.Id.ToString() == coffeeID);
             return coffee;
         }
@@ -94,7 +95,7 @@ namespace bislerium_cafe_pos.Services
         //update existing cofee in the llist and json
         public void UpdateCoffeeData(Coffee coffee)
         {
-            List<Coffee> coffeeTable = GetCoffeeListFromJson();
+            List<Coffee> coffeeTable = GetCoffeeTableFromJson();
             Coffee coffeeToUpdate = coffeeTable.FirstOrDefault(_coffee => _coffee.Id.ToString() == coffee.Id.ToString());
             if (coffeeToUpdate == null)
             {
@@ -110,7 +111,7 @@ namespace bislerium_cafe_pos.Services
         //deletes a coffee by id and update in json
         public List<Coffee> DeleteCoffeeName(Guid coffeeID)
         {
-            List<Coffee> coffeeTable = GetCoffeeListFromJson();
+            List<Coffee> coffeeTable = GetCoffeeTableFromJson();
             Coffee coffee = coffeeTable.FirstOrDefault(coffee => coffee.Id.ToString() == coffeeID.ToString());
 
             if(coffee != null)

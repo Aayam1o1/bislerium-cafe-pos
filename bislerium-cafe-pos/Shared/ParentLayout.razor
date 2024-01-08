@@ -1,4 +1,6 @@
 @inherits LayoutComponentBase
+@inject CoffeeServices CoffeServices
+
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -15,4 +17,8 @@
 
 @code{
     private GlobalState _globalState = new();
+    protected override void OnInitialized()
+    {
+        CoffeServices.SeedCoffeeDetails();
+    }
 }

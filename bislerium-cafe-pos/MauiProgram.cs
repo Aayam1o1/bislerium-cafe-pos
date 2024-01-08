@@ -25,7 +25,7 @@ namespace bislerium_cafe_pos
 #endif  
             builder.Services.AddMudServices();
             builder.Services.AddSingleton<UserServices>();
-
+            builder.Services.AddSingleton<CoffeeServices>();
 
             return builder.Build();
         }

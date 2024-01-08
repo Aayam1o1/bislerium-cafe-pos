@@ -1,0 +1,94 @@
+﻿@page "/coffee-table/{coffeeID}"
+@inject NavigationManager NavigationManager
+@inject CoffeeServices CoffeeServices
+@inject ISnackbar Snackbar
+
+
+
+<h1>Edit Coffee Details</h1>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+}
+
+@if (_coffee != null)
+{
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-6 d-flex flex-column gap-y-3">
+                <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+                <MudTextField @bind-Value="_coffee.CoffeeName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="_coffee.Price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
+                <div>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack" Class="mt-5 mr-5" OnClick="goBack">
+                        Back
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="UpdateCoffeeDetails">
+                        Update Coffee
+                    </MudButton>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">Invalid Coffee ID</MudAlert>
+}
+
+    @code {
+    [Parameter]
+    public string coffeeID { get; set; }
+
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    private string _errorMessage { get; set; } = "";
+    private Coffee _coffee { get; set; }
+    private string _currentPassword { get; set; }
+    protected override void OnInitialized()
+    {
+        _coffee = CoffeeServices.GetCoffeeDataById(coffeeID);
+    }
+    protected void goBack()
+    {
+        NavigationManager.NavigateTo("/coffee");
+    }
+    protected void UpdateCoffeeDetails()
+    {
+        try
+        {
+            if (String.IsNullOrEmpty(_currentPassword))
+            {
+                _errorMessage = "Please enter the password";
+                return;
+            }
+            if (String.IsNullOrEmpty(_coffee.CoffeeName))
+            {
+                _errorMessage = "Please enter the coffee name";
+                return;
+            }
+            if (_coffee.Price <= 0)
+            {
+                _errorMessage = "Please enter a valid price for the coffee";
+                return;
+            }
+            if (_currentPassword != "admin")
+            {
+                _errorMessage = "Invalid password";
+                return;
+            }
+
+            CoffeeServices.UpdateCoffeeData(_coffee);
+
+            _errorMessage = "";
+
+            Snackbar.Add("Coffee Details is updated and stored succesfully", Severity.Success);
+            goBack();
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}
