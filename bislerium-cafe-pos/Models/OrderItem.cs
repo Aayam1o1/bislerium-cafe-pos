@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace bislerium_cafe_pos.Models
+{
+    public class OrderItems
+    {
+        public Guid OrderItemID { get; set; } = Guid.NewGuid();
+        public Guid ItemID { get; set; }
+        public string OrderedItemName { get; set; }
+        public string OrderedItemType { get; set;}
+        public int Quantity { get; set; }
+        public double Price { get; set; }
+        public double TotalPrice { get; set; }
+    }
+}

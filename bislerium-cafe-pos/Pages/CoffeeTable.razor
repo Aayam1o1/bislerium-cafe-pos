@@ -1,6 +1,7 @@
 ﻿@page "/coffee"
 @inject NavigationManager NavigationManager
 @inject CoffeeServices CoffeeServices
+@inject OrderItemServices OrderItemServices
 @inject ISnackbar Snackbar
 
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
@@ -19,10 +20,12 @@
         <MudTd DataLabel="Nr">@context.CoffeeName</MudTd>
             <MudTd DataLabel="Sign">@context.Price</MudTd>
             <MudTd DataLabel="Action">
-                <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" aria-label="Cart"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" aria-label="Cart"
+                               OnClick="@(() => AddItemInCart(context.Id, context.Price, context.CoffeeName))">
+                </MudIconButton>
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" aria-label="Edit" OnClick="@(() => edit(context.Id))" Disabled="@isUserStaff">></MudIconButton>
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete" OnClick="@(() => handleDelete(context.Id))" Disabled="@isUserStaff">></MudIconButton>
-
+                
             </MudTd>
         </RowTemplate>
         <PagerContent>
@@ -53,7 +56,6 @@
     {
         Elements = CoffeeServices.GetCoffeeTableFromJson();
         isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
-        // _globalState.AppBarTitle = "Items";
     }
 
     private void edit(Guid coffeeId)
@@ -61,11 +63,12 @@
         NavigationManager.NavigateTo($"/coffee-Table/{coffeeId}");
     }
 
-    @* private void AddItemInCart(Guid coffeeID, double coffeePrice, string coffeeName)
+    private void AddItemInCart(Guid coffeeID, double coffeePrice, string coffeeName)
     {
-        orderItemServices.AddItemInCartList(_globalState.orderItems, coffeeID, coffeeName, coffeeName, "coffee", coffeePrice);
+        OrderItemServices.AddItemInOrderList(_globalState.OrderItems, coffeeID, coffeeName, "coffee", coffeePrice);
+        Snackbar.Add($"{coffeeName} is added to the cart", Severity.Success);
 
-    } *@
+    }
 
     private void handleDelete(Guid coffeeID)
     {

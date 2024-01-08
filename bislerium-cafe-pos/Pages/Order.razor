@@ -1,45 +1,60 @@
 ﻿@page "/order"
 @inject CoffeeServices CoffeeServices
+@inject AddOnsService AddOnServices
+@inject OrderItemServices OrderItemServices
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
 
 
+@if (Elements.Count() == 0)
+{
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Filled">Cart is Empty. Order Some Coffee !!</MudAlert>
+}
+else
+{
 
-<h1>Order the coffee</h1>
+    <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Coffee</MudText>
+            <MudSpacer />
+            @* <MudTextField Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Coffee Name</MudTh>
+            <MudTh>Item Type</MudTh>
+            <MudTh>Price</MudTh>
+            <MudTh>Quantity</MudTh>
+            <MudTh>Total</MudTh>
+            <MudTh>Action</MudTh>
 
-<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">Coffee</MudText>
-        <MudSpacer />
-        @* <MudTextField Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Coffee Name</MudTh>
-        <MudTh>Item Type</MudTh>
-        <MudTh>Price</MudTh>
-        <MudTh>Quantity</MudTh>
-        <MudTh>Total</MudTh>
-        <MudTh>Action</MudTh>
-
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Coffee Name"></MudTd>
-            <MudTd DataLabel="Item Ordered Type"></MudTd>
-            <MudTd DataLabel="Price"></MudTd>
-            <MudTd DataLabel="Quantity">
-                <MudIconButton Icon="@Icons.Material.Filled.Remove" aria-label="subtract"></MudIconButton>
-                <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="add"></MudIconButton>
-            </MudTd>
-            <MudTd DataLabel="Total"></MudTd>
-            <MudTd DataLabel="Action">
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete"></MudIconButton>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Item Ordered Name">@context.OrderedItemName</MudTd>
+                <MudTd DataLabel="Item Ordered Type">@context.OrderedItemType</MudTd>
+                <MudTd DataLabel="Price">@context.Price</MudTd>
+                <MudTd DataLabel="Quantity">
+                    <MudIconButton Icon="@Icons.Material.Filled.Remove" aria-label="subtract" OnClick="@(() => ManageQuantity(context.OrderItemID, "subtract"))"></MudIconButton>
+                    <span>
+                        @context.Quantity
+                    </span>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => ManageQuantity(context.OrderItemID, "add"))"></MudIconButton>
+                </MudTd>
+                <MudTd DataLabel="Total Price">Rs.@context.TotalPrice</MudTd>
+                <MudTd DataLabel="Action">
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete" OnClick="@(() => DeleteCartItem(context.OrderItemID))"></MudIconButton>
             
-            </MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
-
-
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    <div class="mt-5">
+        <MudButton Variant="Variant.Filled" Class="mr-5">Clear Cart</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Checkout
+                   </MudButton>
+    </div>
+}
 
 
 @code {
@@ -47,19 +62,46 @@
     [CascadingParameter]
     private GlobalState _globalState { get; set; }
 
+    private double _totalAmount { set; get; } = 0;
+
+    private IEnumerable<OrderItems> Elements = new List<OrderItems>();
+
+    private Coffee _coffee { set; get; }
+
+    protected override void OnInitialized()
+    {
+        Elements = _globalState.OrderItems;
+        _totalAmount = OrderItemServices.CalculateTotalAmount(Elements);
+
+        // isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
+        // _globalState.AppBarTitle = "Items";
+    }
+
+    private void clearCart()
+    {
+        _globalState.OrderItems.Clear();
+        Snackbar.Add("Cart is cleared successfully", Severity.Success);
+    }
+
+    private void DeleteCartItem(Guid orderItemID)
+    {
+        OrderItemServices.DeleteItemInOrderList(_globalState.OrderItems, orderItemID);
+        _totalAmount = OrderItemServices.CalculateTotalAmount(Elements);
+        Snackbar.Add($"The Item is removed from the cart", Severity.Success);
+    }
+
+    private void ManageQuantity(Guid orderItemID, string action)
+    {
+        OrderItemServices.ManageQuantityOrderItems(_globalState.OrderItems, orderItemID, action);
+        _totalAmount = OrderItemServices.CalculateTotalAmount(Elements);
+
+    }
+
+
     private bool dense = true;
     private bool hover = true;
     private bool striped = true;
     private bool bordered = true;
     // private string searchString1 = "";
     // private string selectedItem1 = null;
-
-    private IEnumerable<Coffee> Elements = new List<Coffee>();
-
-    protected override void OnInitialized()
-    {
-        Elements = CoffeeServices.GetCoffeeTableFromJson();
-        // isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
-        // _globalState.AppBarTitle = "Items";
-    }
 }

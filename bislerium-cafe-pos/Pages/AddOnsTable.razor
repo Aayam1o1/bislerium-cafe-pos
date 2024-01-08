@@ -1,6 +1,7 @@
 ﻿@page "/addons-items"
 @inject NavigationManager NavigationManager
 @inject AddOnsService AddOnServices
+@inject OrderItemServices OrderItemServices
 
 @inject ISnackbar Snackbar
 
@@ -20,7 +21,7 @@
         <MudTd DataLabel="Add ons name">@context.AddOnsName</MudTd>
             <MudTd DataLabel="Price">@context.Price</MudTd>
             <MudTd DataLabel="Action">
-                <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" aria-label="Cart"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" aria-label="Cart" OnClick="@(() => handleAddItemInCart(context.Id, context.Price, context.AddOnsName))"></MudIconButton>
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" aria-label="Edit" OnClick="@(() => handleEdit(context.Id))" Disabled="@isUserStaff"></MudIconButton>
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete" OnClick="@(() => handleDelete(context.Id))" Disabled="@isUserStaff"></MudIconButton>
 
@@ -59,6 +60,12 @@
         // _globalState.AppBarTitle = "Items";
     }
 
+    private void handleAddItemInCart(Guid addInItemID, double itemPrice, string addInItemName)
+    {
+        OrderItemServices.AddItemInOrderList(_globalState.OrderItems, addInItemID, addInItemName, "add-on", itemPrice);
+
+        Snackbar.Add($"{addInItemName} is Added to cart", Severity.Success);
+    }
 
 
     private void handleDelete(Guid AddOnitemID)
