@@ -1,0 +1,96 @@
+@page "/addOn-items/{addOnItemID}"
+@inject NavigationManager NavigationManager
+@inject AddOnsService AddOnServices
+@inject ISnackbar Snackbar
+
+
+
+<h1>Edit Add ons Details</h1>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+}
+
+@if (_addOnItem != null)
+{
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-6 d-flex flex-column gap-y-3">
+                <MudTextField @bind-Value="_addOnItem.AddOnsName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="_addOnItem.Price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
+                <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+                <div>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack" Class="mt-5 mr-5" OnClick="goBack">
+                        Back
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="UpdateCoffeeDetails">
+                        Update Add-On
+                    </MudButton>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">Invalid Coffee ID</MudAlert>
+}
+
+@code {
+    [Parameter]
+    public string addOnItemID { get; set; }
+
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    
+
+    private string _errorMessage { get; set; } = "";
+    private AddOnItem _addOnItem { get; set; }
+    private string _currentPassword { get; set; }
+    protected override void OnInitialized()
+    {
+        _addOnItem = AddOnServices.GetAddOnItemDataById(addOnItemID);
+    }
+    protected void goBack()
+    {
+        NavigationManager.NavigateTo("/addons-items");
+    }
+    protected void UpdateCoffeeDetails()
+    {
+        try
+        {
+            if (String.IsNullOrEmpty(_currentPassword))
+            {
+                _errorMessage = "Please enter the password";
+                return;
+            }
+            if (String.IsNullOrEmpty(_addOnItem.AddOnsName))
+            {
+                _errorMessage = "Please enter the Add On Name name";
+                return;
+            }
+            if (_addOnItem.Price <= 0)
+            {
+                _errorMessage = "Please enter a valid price for the coffee";
+                return;
+            }
+            if (_currentPassword != "admin")
+            {
+                _errorMessage = "Invalid password";
+                return;
+            }
+
+            AddOnServices.UpdateAddOnItemData(_addOnItem);
+
+            _errorMessage = "";
+
+            Snackbar.Add("Add On Details is updated and stored succesfully", Severity.Success);
+            goBack();
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}

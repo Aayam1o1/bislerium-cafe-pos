@@ -1,0 +1,70 @@
+﻿@page "/addons-items"
+@inject NavigationManager NavigationManager
+@inject AddOnsService AddOnServices
+
+@inject ISnackbar Snackbar
+
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Add Ons</MudText>
+        <MudSpacer />
+        @* <MudTextField Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Add ons name</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Action</MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Add ons name">@context.AddOnsName</MudTd>
+            <MudTd DataLabel="Price">@context.Price</MudTd>
+            <MudTd DataLabel="Action">
+                <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" aria-label="Cart"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" aria-label="Edit" OnClick="@(() => handleEdit(context.Id))" Disabled="@isUserStaff"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete" OnClick="@(() => handleDelete(context.Id))" Disabled="@isUserStaff"></MudIconButton>
+
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+@code {
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+
+    private bool isUserStaff { get; set; }
+
+    private void handleEdit(Guid addOnItemID)
+    {
+        NavigationManager.NavigateTo($"/addOn-items/{addOnItemID}");
+    }
+
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string selectedItem1 = null;
+
+
+    private IEnumerable<AddOnItem> Elements = new List<AddOnItem>();
+
+    protected override void OnInitialized()
+    {
+        Elements = AddOnServices.GetAddOnItemTableFromJson();
+        isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
+        // _globalState.AppBarTitle = "Items";
+    }
+
+
+
+    private void handleDelete(Guid AddOnitemID)
+    {
+        Elements = AddOnServices.DeleteAddOnItem(AddOnitemID);
+
+        Snackbar.Add("Item is Deleted Sucessfully", Severity.Success);
+    }
+}

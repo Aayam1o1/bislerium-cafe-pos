@@ -21,7 +21,9 @@ namespace bislerium_cafe_pos.Services
             new() { CoffeeName = "Flat White", Price = 160.0 },
             new() { CoffeeName = "Affogato", Price = 200.0 },
             new() { CoffeeName = "Irish Coffee", Price = 190.0 },
-            new() { CoffeeName = "Turkish Coffee", Price = 130.0 }
+            new() { CoffeeName = "Turkish Coffee", Price = 130.0 },
+            new() { CoffeeName = "lol Coffee", Price = 130.0 },
+            new() { CoffeeName = "test Coffee", Price = 130.0 }
         };
 
         //add new coffe and save it
@@ -41,13 +43,12 @@ namespace bislerium_cafe_pos.Services
         }
 
         //save cofee table in json file
-
         public void SaveCoffeeTableInJson(List<Coffee> coffeeTable)
         {
             //folder path for storing 
             string appDataDirctory = AppUtils.GetDesktopDirectoryPath();
 
-            string coffeeTableFilePath = AppUtils.GetDesktopDirectoryPath();
+            string coffeeTableFilePath = AppUtils.GetCoffeeFilePath();
 
             if (!Directory.Exists(appDataDirctory))
             {
@@ -58,6 +59,8 @@ namespace bislerium_cafe_pos.Services
 
             File.WriteAllText(coffeeTableFilePath, jsonFile);
         }
+
+
         //retrive coffee tbale form json
         public List<Coffee> GetCoffeeTableFromJson()
         {

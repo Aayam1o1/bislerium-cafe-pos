@@ -10,12 +10,7 @@ namespace bislerium_cafe_pos.Utils
     {
         public static string GetDesktopDirectoryPath()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer), "Bislerium");
-            if(!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            return path;
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Bislerium_cw_db");
         }
 
         public static string GetAppUsersFilePath()
@@ -26,6 +21,10 @@ namespace bislerium_cafe_pos.Utils
         public static string GetCoffeeFilePath()
         {
             return Path.Combine(GetDesktopDirectoryPath(), "coffee.json");
+        }
+        public static string GetAddOnTableFilePath()
+        {
+            return Path.Combine(GetDesktopDirectoryPath(), "addOn.json");
         }
     }
 }

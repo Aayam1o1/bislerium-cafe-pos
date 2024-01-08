@@ -1,7 +1,7 @@
 ﻿@page "/coffee"
 @inject NavigationManager NavigationManager
 @inject CoffeeServices CoffeeServices
-
+@inject ISnackbar Snackbar
 
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
     <ToolBarContent>
@@ -20,8 +20,8 @@
             <MudTd DataLabel="Sign">@context.Price</MudTd>
             <MudTd DataLabel="Action">
                 <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" aria-label="Cart"></MudIconButton>
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" aria-label="Edit" OnClick="@(() => edit(context.Id))"></MudIconButton>
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Success" aria-label="Edit" OnClick="@(() => edit(context.Id))" Disabled="@isUserStaff">></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" aria-label="Delete" OnClick="@(() => handleDelete(context.Id))" Disabled="@isUserStaff">></MudIconButton>
 
             </MudTd>
         </RowTemplate>
@@ -52,7 +52,7 @@
     protected override void OnInitialized()
     {
         Elements = CoffeeServices.GetCoffeeTableFromJson();
-        // isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
+        isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
         // _globalState.AppBarTitle = "Items";
     }
 
@@ -66,4 +66,11 @@
         orderItemServices.AddItemInCartList(_globalState.orderItems, coffeeID, coffeeName, coffeeName, "coffee", coffeePrice);
 
     } *@
+
+    private void handleDelete(Guid coffeeID)
+    {
+        Elements = CoffeeServices.DeleteCoffeeName(coffeeID);
+
+        Snackbar.Add("Coffee is Deleted Sucessfully", Severity.Success);
+    }
 } 
