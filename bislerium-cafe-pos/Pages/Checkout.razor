@@ -123,8 +123,8 @@
                         <div class="">
                             @if (_totalFreeCoffeeCount != 0)
                         {
-                            @* <MudText Typo="Typo.h6">Total Free Coffees: @_totalFreeCoffeeCount</MudText>
-                            <MudButton Color="Color.Info" Variant="Variant.Filled" Class="mt-2" OnClick="HandleFreeCoffeeRedeemption">Reedem</MudButton> *@
+                            <MudText Typo="Typo.h6">Total Free Coffees: @_totalFreeCoffeeCount</MudText>
+                            <MudButton Color="Color.Info" Variant="Variant.Filled" Class="mt-2" OnClick="HandleFreeCoffeeRedeemption">Reedem</MudButton>
                         }
                     </div>
 
@@ -274,6 +274,20 @@
         {
             Snackbar.Add(e.Message, Severity.Error);
         }
+    }
+
+    // Handles the Coffee Redeemption for every 10 purhcases
+    private void HandleFreeCoffeeRedeemption()
+    {
+        Dictionary<string, double> membershipBenefits = OrderItemServices.ReedeemCoffee(_totalFreeCoffeeCount, _globalState.OrderItems);
+
+        //Converting double to integer
+        int redeemedCoffeeCount = (int)membershipBenefits["redeemedCoffeeCount"];
+        _discountAmount = membershipBenefits["discount"];
+
+        CustomerService.UpdateRedeemedCoffeeCount(_customer.CustomerPhoneNumber, redeemedCoffeeCount);
+
+        Snackbar.Add($"{redeemedCoffeeCount} coffees are redeemed.", Severity.Success);
     }
 
     //MudTable attributes

@@ -75,5 +75,60 @@ namespace bislerium_cafe_pos.Services
             }
             return totalAmount;
         }
+
+        public Dictionary<string, double> ReedeemCoffee(int totalFreeCoffeeCount, List<OrderItems> orderCartItems)
+        {
+            // Initialize variables for redeemed coffees and total discount amount.
+            int totalRedeemedCoffeeCount = 0;
+            double totalDiscountAmount = 0;
+
+            // If no free coffees is available, this returns an empty dictionary.
+            if (orderCartItems.Count == 0 || totalFreeCoffeeCount <= 0)
+            {
+                return new Dictionary<string, double>();
+            }
+
+            //Caluclating total quantity in cart
+            int totalItemsQuantityCart = orderCartItems
+                                                         .Where(item => item.OrderedItemType == "coffee")
+                                                          .Sum(item => item.Quantity);
+
+            // Filtering, order coffee items in cart with help of price in descending order.
+            var coffeeItems = orderCartItems
+                .Where(item => item.OrderedItemType == "coffee")
+                .OrderByDescending(item => item.Price)
+                .ToList();
+
+            foreach (var orderItem in coffeeItems)
+            { 
+                // Calculating the quantity of the coffee item after redeeming free coffee
+                int diffBetweenCartAndFreeCoffeeCount = Math.Max(0, orderItem.Quantity - totalFreeCoffeeCount);
+
+                int reedeemedItemQuantity = diffBetweenCartAndFreeCoffeeCount == 0 ? orderItem.Quantity : diffBetweenCartAndFreeCoffeeCount;
+
+                // Calculate the number of redeemed coffee
+                totalRedeemedCoffeeCount += reedeemedItemQuantity;
+
+                // Calculate the discount amount for the item
+                totalDiscountAmount += (orderItem.Price * reedeemedItemQuantity);
+
+                // Update the remaining free coffee count.
+                totalFreeCoffeeCount -= reedeemedItemQuantity;
+
+                // if no more free coffee- > break the loop
+                if (totalFreeCoffeeCount <= 0)
+                {
+                    break;
+                }
+            }
+
+            // Return a dictionary containing the total discount amount and the count of redeemed coffees.
+            return new Dictionary<string, double>
+            {
+                { "discount", totalDiscountAmount },
+                { "redeemedCoffeeCount", totalRedeemedCoffeeCount }
+            };
+        }
+
     }
 }
