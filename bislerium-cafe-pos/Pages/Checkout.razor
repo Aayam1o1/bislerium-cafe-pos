@@ -199,6 +199,17 @@
             _page++;
             return;
         }
+        _totalFreeCoffeeCount = CustomerService.TotalFreeCoffeeCount(_customer.CustomerPhoneNumber);
+        bool isCustomerRegularMember = CustomerService.IfCustomerIsRegularMember(_customer.CustomerPhoneNumber);
+
+        if(isCustomerRegularMember)
+        {
+            _discountAmount = _totalAmount * 0.1;
+        }
+        Snackbar.Add("Customer is a registered memeber", Severity.Success);
+
+        _customerIsMemeber = true;
+        _page = 3;
     }
 
 
