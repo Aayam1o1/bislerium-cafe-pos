@@ -1,4 +1,8 @@
-﻿<MudPaper Width="250px" Elevation="0" Class="py-1">
+﻿@inject NavigationManager NavigationManager
+
+
+
+<MudPaper Width="250px" Elevation="0" Class="py-1">
     <MudAppBar Color="Color.Dark">
         <MudText Style="font-weight: normal; font-size: 20px" Class="text-white"><Bislerum Cafe/></MudText>
     </MudAppBar>
@@ -8,6 +12,36 @@
         <MudNavLink Href="/coffee" Icon="@Icons.Material.Filled.Coffee">Coffee</MudNavLink>
         <MudNavLink Href="/addons-items" Icon="@Icons.Material.Filled.AddCircleOutline">Addons</MudNavLink>
         <MudNavLink Href="/order" Icon="@Icons.Material.Filled.BookmarkBorder">Order</MudNavLink>
-        @* <MudNavLink Href="" Icon="@Icons.Material.Filled.Logout">Sign Out</MudNavLink> *@
+        @if (_isUserAdmin)
+        {
+            <MudNavLink Match="NavLinkMatch.All" Href="/sales-report" Icon="@Icons.Material.Filled.Receipt">Sales Transactions</MudNavLink>
+        }
+        @if (_isUserAdmin)
+        {
+            <MudNavLink Match="NavLinkMatch.All" Href="/generate-reports" Icon="@Icons.Material.Filled.Description">Generate Reports</MudNavLink>
+        }
+        <MudNavLink Href="" Icon="@Icons.Material.Filled.Logout">Sign Out</MudNavLink>
     </MudNavMenu>
 </MudPaper>
+
+
+@code
+{
+    [CascadingParameter] private GlobalState _globalState { set; get; }
+    private bool _isUserAdmin { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _isUserAdmin = _globalState?.CurrentUser?.Role.ToString() == "admin";
+    }
+
+    private void logout()
+    {
+        //OnClicking the logout button, the current user will be set to null, the order items will be cleared
+        // and the user will be navigated to sign-in page.
+        _globalState.CurrentUser = null;
+        _globalState.OrderItems = new();
+
+        NavigationManager.NavigateTo("/");
+    }
+}

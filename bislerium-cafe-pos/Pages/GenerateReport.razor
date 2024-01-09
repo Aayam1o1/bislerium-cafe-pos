@@ -1,0 +1,103 @@
+﻿@page "/generate-reports"
+@inject ISnackbar Snackbar
+@inject OrderService OrderServices
+@using QuestPDF.Fluent
+@inject ReportService ReportDataService
+
+
+<MudText Typo="Typo.h6">Select Date and Type to Generate Report</MudText>
+
+<div style="width:300px;" class="mb-5">
+
+    <div class="my-5">
+        <MudSelect @bind-Value="_reportType" Margin="Margin.Dense" T="string" Label="Report Type" Variant="Variant.Text">
+            <MudSelectItem Value="@("Daily")" />
+            <MudSelectItem Value="@("Monthly")" />
+        </MudSelect>
+    </div>
+    <div>
+        <MudDatePicker Label="Select Date" Editable="true" @bind-Date="_date" Placeholder="Select Date" />
+    </div>
+
+</div>
+
+<MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" OnClick="GenerateReports">Generate Report</MudButton>
+
+@code {
+    [CascadingParameter] private GlobalState _globalState { get; set; }
+
+    private DateTime? _date { set; get; }
+    private string _reportType { set; get; }
+
+
+    //  Generatin the PDF file
+    private void GenerateReports()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(_reportType))
+            {
+                Snackbar.Add("Please choose a Report Type", Severity.Error);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(_date.ToString()))
+            {
+                Snackbar.Add("Please Select the date", Severity.Error);
+                return;
+            }
+
+            // This report date is converted to respective format
+            // Report Type: Monthly -> yyyy-MM
+            // Report Type: Daily -> yyyy-MM-dd
+            String reportDate;
+
+            if (_reportType == "Daily")
+            {
+                reportDate = _date?.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                reportDate = _date?.ToString("yyyy-MM");
+            }
+
+            // the list of orders as report type and date
+            List<Order> orders = ReportDataService.GenerateOrderTable(_reportType, reportDate);
+
+            if (orders.Count == 0)
+            {
+                Snackbar.Add("No Orders Founds on this date. Please select another date", Severity.Error);
+                return;
+            };
+
+            // The list of most purchased coffee and add-ons from the filtered orders
+            Dictionary<string, List<OrderItems>> orderItems = ReportDataService.MostPurchasedCoffeeAndAddOns(orders);
+
+            Report _report = new()
+                {
+                    ReportType = _reportType,
+                    ReportDate = reportDate,
+                    Orders = orders,
+                    CoffeeList = orderItems["coffees"],
+                    AddOnsList = orderItems["add-ons"],
+                    TotalRevenue = Math.Round(orders.Sum(_order => (_order.OrderTotalAmount - _order.DiscountAmount)), 2)
+                };
+
+            // PDF  Generation
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+            PdfReportDocument document = new PdfReportDocument(_report);
+            string filePath = Path.Combine(AppUtils.GetDesktopDirectoryPath(), "Report.PDF");
+            document.GeneratePdf(filePath);
+
+            Snackbar.Add("Reports is sucessfully generated. Please look into the saved folder", Severity.Success);
+
+            
+
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add(e.Message, Severity.Error);
+
+        }
+    }
+}
