@@ -26,5 +26,19 @@ namespace bislerium_cafe_pos.Utils
         {
             return Path.Combine(GetDesktopDirectoryPath(), "addOn.json");
         }
+        public static string GetCustomersListFilePath()
+        {
+            return Path.Combine(GetDesktopDirectoryPath(), "customers.json");
+        }
+
+        public static string GetOrderItemListFilePath()
+        {
+            return Path.Combine(GetDesktopDirectoryPath(), "orderItems.json");
+        }
+
+        public static string GetOrderListFilePath()
+        {
+            return Path.Combine(GetDesktopDirectoryPath(), "orders.json");
+        }
     }
 }
