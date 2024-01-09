@@ -5,6 +5,10 @@
 
 @inject ISnackbar Snackbar
 
+<MudButton Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add"
+           class="mb-5" OnClick="@(() => addAddOns())"
+           Disabled="@isUserStaff">Add AddOns</MudButton>
+
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Add Ons</MudText>
@@ -66,7 +70,10 @@
 
         Snackbar.Add($"{addInItemName} is Added to cart", Severity.Success);
     }
-
+    private void addAddOns()
+    {
+        NavigationManager.NavigateTo($"/add-Addons");
+    }
 
     private void handleDelete(Guid AddOnitemID)
     {

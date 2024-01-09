@@ -1,0 +1,89 @@
+@page "/add-coffee"
+@inject NavigationManager NavigationManager
+@inject CoffeeServices CoffeeServices
+@inject ISnackbar Snackbar
+
+
+
+<h1>Edit Coffee Details</h1>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+}
+
+
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-6 d-flex flex-column gap-y-3">
+                <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+                <MudTextField @bind-Value="_coffeeName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="_price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
+                <div>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack" Class="mt-5 mr-5" OnClick="goBack">
+                        Back
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="AddCoffeeDetails">
+                        Add Coffee
+                    </MudButton>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@code {
+    [Parameter]
+    public string coffeeID { get; set; }
+
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    private string _errorMessage { get; set; } = "";
+    private string _coffeeName { get; set; }
+    private string _currentPassword { get; set; }
+    private double _price   { get; set; }
+
+    
+    protected void goBack()
+    {
+        NavigationManager.NavigateTo("/coffee");
+    }
+    protected void AddCoffeeDetails()
+    {
+        try
+        {
+            if (String.IsNullOrEmpty(_currentPassword))
+            {
+                _errorMessage = "Please enter the password";
+                return;
+            }
+            if (String.IsNullOrEmpty(_coffeeName))
+            {
+                _errorMessage = "Please enter the coffee name";
+                return;
+            }
+            if (_price <= 0)
+            {
+                _errorMessage = "Please enter a valid price for the coffee";
+                return;
+            }
+            if (_currentPassword != "admin")
+            {
+                _errorMessage = "Invalid password";
+                return;
+            }
+
+            CoffeeServices.AddCoffee(_coffeeName, _price);
+
+            _errorMessage = "";
+
+            Snackbar.Add("Coffee Details is Added and stored succesfully", Severity.Success);
+            goBack();
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+}
