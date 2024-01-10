@@ -9,11 +9,13 @@
 </style>
 
 <MudPaper Width="250px" Elevation="0" Class="py-1">
-    <MudAppBar Color="Color.Dark">  
+    <MudAppBar Color="Color.Dark"> 
+        <MudChip Style="margin-left: 40px" Icon="@Icons.Material.Filled.Person" Color="Color.Primary" Size="Size.Large">@_globalState.CurrentUser?.Role</MudChip>
     </MudAppBar>
 
     <MudNavMenu Style="padding-top:53px" Margin="Margin.Normal" Color="Color.Error">
         <img src="/images/logo.png" />
+        
         <MudNavLink Href="/coffee" Icon="@Icons.Material.Filled.Coffee">Coffee</MudNavLink>
         <MudNavLink Href="/addons-items" Icon="@Icons.Material.Filled.AddCircleOutline">Addons</MudNavLink>
         <MudNavLink Href="/order" Icon="@Icons.Material.Filled.BookmarkBorder">Order</MudNavLink>
