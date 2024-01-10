@@ -1,7 +1,6 @@
 ﻿@page "/sales-report"
 @inject OrderService OrderServices
 
-<h3>SalesTransaction</h3>
 
 <style>
     .table-row {
@@ -31,17 +30,17 @@
     <RowTemplate>
         <MudTd DataLabel="Order ID" Class="table-row">@context.OrderID</MudTd>
             <MudTd DataLabel="Customer Name" Class="table-row">
-                <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary" Size="Size.Small">@context.CustomerName</MudChip>
+                <MudText Size="Size.Small">@context.CustomerName</MudText>
             </MudTd>
             <MudTd DataLabel="Phone Number" Class="table-row">@context.CustomerPhoneNumber</MudTd>
             <MudTd DataLabel="Employee Name" Class="table-row">
                 @if (context.EmployeeUserName == "admin")
             {
-                <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Info" Size="Size.Small">@context.EmployeeUserName.ToUpper()</MudChip>
+                <MudText Size="Size.Small">@context.EmployeeUserName.ToLower()</MudText>
             }
             else
             {
-                <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Success" Size="Size.Small">@context.EmployeeUserName.ToUpper()</MudChip>
+                <MudText Size="Size.Small">@context.EmployeeUserName.ToLower()</MudText>
             }
         </MudTd>
         <MudTd DataLabel="DateTime" Class="table-row">@context.OrderDateTime</MudTd>

@@ -52,11 +52,7 @@ namespace bislerium_cafe_pos.PDF
                 {
                     column.Item().Text($"{pdfTitleName}").Style(pdfTitleStyle);
 
-                    column.Item().Text(text =>
-                    {
-                        text.Span("Issue date: ").Medium();
-                        text.Span($"{DateTime.Now}").Medium();
-                    });
+                   
                 });
             });
         }
@@ -67,12 +63,15 @@ namespace bislerium_cafe_pos.PDF
 
                 var pdftitleStyle = TextStyle.Default.FontSize(16).SemiBold();
 
-                string pdfTitleName = $"Top 5 Most Purchased Items - ({ReportObj.ReportDate})";
+                string pdfTitleName = $"Top 5 Most Purchased Items)";
 
                 column.Item().Text(pdfTitleName).Style(pdftitleStyle);
 
                 column.Item().PaddingTop(7).Element(HeadingForTopCoffees);
                 column.Item().PaddingTop(7).Element(MostPurchasedCoffesTable);
+
+                column.Item().PaddingTop(7).Element(HeadingForTopAddOnsItems);
+                column.Item().PaddingTop(7).Element(PurchasedAddOnsItemTable);
 
                 // Sales Transactions
                 column.Item().PaddingTop(30).Element(SalesTransactionsHeader);
@@ -153,7 +152,7 @@ namespace bislerium_cafe_pos.PDF
                 // step 2
                 table.Header(header =>
                 {
-                    header.Cell().Element(CellStyle).Text("#");
+                    header.Cell().Element(CellStyle).Text("SNo");
                     header.Cell().Element(CellStyle).Text("Customer Name");
                     header.Cell().Element(CellStyle).Text("Phone Number");
                     header.Cell().Element(CellStyle).Text("Employee");
@@ -235,7 +234,7 @@ namespace bislerium_cafe_pos.PDF
                 // step 2
                 table.Header(header =>
                 {
-                    header.Cell().Element(CellStyle).Text("#");
+                    header.Cell().Element(CellStyle).Text("SNo");
                     header.Cell().Element(CellStyle).Text("Coffee Type");
                     header.Cell().Element(CellStyle).Text("Quantity");
 
@@ -278,7 +277,7 @@ namespace bislerium_cafe_pos.PDF
                 // step 2
                 table.Header(header =>
                 {
-                    header.Cell().Element(CellStyle).Text("#");
+                    header.Cell().Element(CellStyle).Text("SNo");
                     header.Cell().Element(CellStyle).Text("Add-On Item Name");
                     header.Cell().Element(CellStyle).Text("Quantity");
 

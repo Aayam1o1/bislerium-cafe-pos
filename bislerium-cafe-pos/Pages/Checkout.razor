@@ -58,7 +58,7 @@
 
 @if (_page == 2)
 {
-    <MudText Typo="Typo.h6">Please Enter Customer Details</MudText>
+    <MudText Class="ml-2"  Typo="Typo.h6">Please Enter Customer Details</MudText>
 
     
 
@@ -85,27 +85,41 @@
     <MudContainer>
         <MudCard>
             <MudCardHeader>
-                <MudText Typo="Typo.h4" Align="Align.Center">Bislerum Cafe Bill</MudText>
+                <div style="text-align: center; width: 100%">
+                    <MudText Typo="Typo.h4">Bislerum Cafe Bill</MudText>
+                </div>
             </MudCardHeader>
              <MudDivider />
                     <MudCardContent>
                         <MudText Typo="Typo.h6">Customer Information:</MudText>
-
-                        <MudGrid Spacing="2">
-                            <MudItem xs="12" md="4">
-                                <MudText Typo="Typo.body2">Customer Name: @_customer.CustomerName</MudText>
-                            </MudItem>
-                            <MudItem xs="12" md="4">
-                                <MudText Typo="Typo.body2">Phone Number: @_customer.CustomerPhoneNumber</MudText>
-                            </MudItem>
-                            <MudItem xs="12" md="4">
-                                <MudText Typo="Typo.body2">Address: @_customer.CustomerAddress</MudText>
-                            </MudItem>
-                            <MudItem xs="12" md="4">
-                                <MudText Typo="Typo.body1" Align="Align.Center">Date: @DateTime.Now</MudText>
-                            </MudItem> 
-                        </MudGrid>
-
+                        <div style="display:flex; flex-direction:row; justify-content: space-between">   
+                            <div style="display:flex; flex-direction:column; width: 1000px">
+                            
+                                <MudItem xs="10" md="2">
+                                    <MudText Typo="Typo.body2">Customer Name: @_customer.CustomerName</MudText>
+    
+                                </MudItem>
+                                <MudItem xs="10" md="2">
+                                    <MudText Typo="Typo.body2">Phone Number: @_customer.CustomerPhoneNumber</MudText>
+                            
+                                </MudItem >
+                                <MudItem xs="10" md="2">
+                                    <MudText Typo="Typo.body2">Address: @_customer.CustomerAddress</MudText>
+                            
+                                </MudItem>
+                                <MudItem xs="10" md="3">
+                                    <MudText Typo="Typo.body2">Date: @DateTime.Now</MudText>
+                                </MudItem> 
+                            
+                            </div>
+                            <div style="align-items:end; margin-right: 10px">
+                                    @if (_totalFreeCoffeeCount != 0)
+                                {
+                                    <MudText Typo="Typo.body2" Class="ml-5">Total Free Coffees: @_totalFreeCoffeeCount</MudText>
+                                    <MudButton Class="Buttonclass" OnClick="HandleFreeCoffeeRedeemption">Reedem</MudButton>
+                                }
+                            </div>
+                        </div>
                     </MudCardContent>
 
              <MudDivider />
@@ -151,14 +165,6 @@
 
                     <div class="d-flex justify-content-between mt-4">
 
-                        <div class="">
-                            @if (_totalFreeCoffeeCount != 0)
-                        {
-                            <MudText Typo="Typo.h6">Total Free Coffees: @_totalFreeCoffeeCount</MudText>
-                            <MudButton Color="Color.Info" Variant="Variant.Filled" Class="mt-2" OnClick="HandleFreeCoffeeRedeemption">Reedem</MudButton>
-                        }
-                    </div>
-
                     <div>
                         <MudText Typo="Typo.subtitle1">Total Amount: <b>Rs.@Math.Round(_totalAmount, 2)</b></MudText>
                         <MudText Typo="Typo.subtitle1">Discount Amount: <b>Rs.@Math.Round(_discountAmount, 2)</b></MudText>
@@ -175,7 +181,7 @@
 
             <MudDivider />
 
-            <div class="py-5 pl-3">
+            <div class="py-5 pl-3 mr-5">
                 <MudButton Color="Color.Default" Variant="Variant.Filled" Class="SecondButton" OnClick="goBack">Go Back</MudButton>
 
                 <MudButton Class="Buttonclass" OnClick="placeOrder">Place Order</MudButton>
@@ -332,7 +338,24 @@
 
         //Converting double to integer
         int redeemedCoffeeCount = (int)membershipBenefits["redeemedCoffeeCount"];
-        _discountAmount = membershipBenefits["discount"];
+        double discountFromRedeem = membershipBenefits["discount"];
+
+        if (_discountAmount == 0)
+        {
+            _discountAmount = discountFromRedeem;
+
+        }
+        else if ((discountFromRedeem + _discountAmount) > _totalAmount)
+        {
+            if (_discountAmount > discountFromRedeem)
+            {
+                Snackbar.Add("Unable to reddem the coffe at the moment", Severity.Error);
+                return;
+            }
+        }
+
+
+
         _customer.RedeemedCoffeeCount = redeemedCoffeeCount;
 
         Snackbar.Add($"{redeemedCoffeeCount} coffees are redeemed.", Severity.Success);

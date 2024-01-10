@@ -70,7 +70,7 @@ namespace bislerium_cafe_pos.Services
         {
             List<Customer> customers = GetCustomerListFromJson();
             Customer customer = customers.FirstOrDefault(c => c.CustomerPhoneNumber == customerPhoneNumber);
-            customer.RedeemedCoffeeCount = redeemedCoffeeCount;
+            customer.RedeemedCoffeeCount += redeemedCoffeeCount;
 
             SaveCustomerListInJson(customers);
 

@@ -15,7 +15,9 @@ namespace bislerium_cafe_pos.Services
                 return new List<Order>();
             }
             var json = File.ReadAllText(orderListFilePath);
+
             return JsonSerializer.Deserialize<List<Order>>(json);
+            
         }
 
         //place new order and append new order to order.json file

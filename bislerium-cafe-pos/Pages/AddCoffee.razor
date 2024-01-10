@@ -21,6 +21,16 @@
         .Buttonclass:hover {
             background-color: #2e84e1
         }
+
+    .SecondButton {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+    }
 </style>
 
 <MudText Class="ml-4 mt-5" Typo="Typo.h6">Add Coffee</MudText>
@@ -40,9 +50,9 @@
                 <MudTextField @bind-Value="_price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
             <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
                 <div>
-                    <MudButton Class="Buttonclass"  StartIcon="@Icons.Material.Filled.ArrowBack"  OnClick="goBack">
-                        Back
-                    </MudButton>
+                <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" StartIcon="@Icons.Material.Filled.ArrowBack" Class="SecondButton" OnClick="goBack">
+                    Back
+                </MudButton>
                 <MudButton Class="Buttonclass" DisableElevation="true" OnClick="AddCoffeeDetails">
                         Add Coffee
                     </MudButton>

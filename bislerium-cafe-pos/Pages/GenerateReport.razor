@@ -4,24 +4,60 @@
 @using QuestPDF.Fluent
 @inject ReportService ReportDataService
 
+<style>
+    .Buttonclass {
+        width: 180px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #3f91ff;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
 
-<MudText Typo="Typo.h6">Select Date and Type to Generate Report</MudText>
+        .Buttonclass:hover {
+            background-color: #2e84e1
+        }
 
-<div style="width:300px;" class="mb-5">
+    .SecondButton {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+    }
+    .wrapper
+    {
+        width: 60%;
+        margin-left: 10px;
+    }
+</style>
+
+
+
+
+<div style="display:flex; justify-content:space-between" class="wrapper"> 
 
     <div class="my-5">
+        <MudText Typo="Typo.h6">Select Report Type</MudText>
         <MudSelect @bind-Value="_reportType" Margin="Margin.Dense" T="string" Label="Report Type" Variant="Variant.Text">
             <MudSelectItem Value="@("Daily")" />
             <MudSelectItem Value="@("Monthly")" />
         </MudSelect>
     </div>
-    <div>
-        <MudDatePicker Label="Select Date" Editable="true" @bind-Date="_date" Placeholder="Select Date" />
+    <div class="my-5">
+        <MudText Typo="Typo.h6">Select Date </MudText>
+        <MudDatePicker Editable="true" @bind-Date="_date" Placeholder="Select Date" />
     </div>
 
 </div>
 
-<MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" OnClick="GenerateReports">Generate Report</MudButton>
+<MudButton Class="Buttonclass" OnClick="GenerateReports">Generate Report</MudButton>
 
 @code {
     [CascadingParameter] private GlobalState _globalState { get; set; }

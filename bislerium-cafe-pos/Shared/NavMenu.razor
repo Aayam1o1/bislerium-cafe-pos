@@ -1,14 +1,19 @@
 ﻿@inject NavigationManager NavigationManager
 
-
+<style>
+    img {
+        margin-left: 40px;
+        height: 150px;
+        width: 150px;
+    }
+</style>
 
 <MudPaper Width="250px" Elevation="0" Class="py-1">
-    <MudAppBar Color="Color.Dark">
-        <MudText Style="font-weight: normal; font-size: 20px" Class="text-white"><Bislerum Cafe/></MudText>
+    <MudAppBar Color="Color.Dark">  
     </MudAppBar>
 
     <MudNavMenu Style="padding-top:53px" Margin="Margin.Normal" Color="Color.Error">
-       
+        <img src="/images/logo.png" />
         <MudNavLink Href="/coffee" Icon="@Icons.Material.Filled.Coffee">Coffee</MudNavLink>
         <MudNavLink Href="/addons-items" Icon="@Icons.Material.Filled.AddCircleOutline">Addons</MudNavLink>
         <MudNavLink Href="/order" Icon="@Icons.Material.Filled.BookmarkBorder">Order</MudNavLink>
