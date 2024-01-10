@@ -90,8 +90,8 @@ namespace bislerium_cafe_pos.Services
 
             //Caluclating total quantity in cart
             int totalItemsQuantityCart = orderCartItems
-                                                         .Where(item => item.OrderedItemType == "coffee")
-                                                          .Sum(item => item.Quantity);
+                .Where(item => item.OrderedItemType == "coffee")
+                .Sum(item => item.Quantity);
 
             // Filtering, order coffee items in cart with help of price in descending order.
             var coffeeItems = orderCartItems
