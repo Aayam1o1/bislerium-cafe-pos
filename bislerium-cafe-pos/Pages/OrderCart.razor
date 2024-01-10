@@ -5,19 +5,65 @@
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 
+<style>
+    .header{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .Buttonclass {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #FFC061;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
+
+    .Buttonclass:hover {
+            background-color: #F89500
+    }
+
+    .SecondButton {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #3f91ff;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
+
+        .SecondButton:hover {
+            background-color: #2e84e1
+        }
+</style>
 
 @if (Elements.Count() == 0)
 {
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Filled">Cart is Empty. Order Some Coffee !!</MudAlert>
+    <div class="d-flex justify-content-center align-items-center mt-xxl-5">
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled">Cart is Empty. Order Some Coffee !!</MudAlert>
+    </div>
 }
 else
 {
 
     <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
         <ToolBarContent>
-            <MudText Typo="Typo.h6">Coffee</MudText>
-            
-            <MudText class="ml-16" Typo="Typo.h6">Total Amount: <b>Rs.@Math.Round(_totalAmount, 2)</b></MudText>
+            <div class="header">
+
+                <MudText Typo="Typo.h6">Order</MudText>
+
+                <MudText Typo="Typo.h6">Total Amount: <b>Rs.@Math.Round(_totalAmount, 2)</b></MudText>
+            </div>
            
             <MudSpacer />
             @* <MudTextField Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
@@ -54,8 +100,8 @@ else
             </PagerContent>
         </MudTable>
     <div class="mt-5">
-        <MudButton Variant="Variant.Filled" Class="mr-5" OnClick="clearCart">Clear Cart</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+        <MudButton Class="SecondButton"  OnClick="clearCart">Clear Cart</MudButton>
+        <MudButton Class="Buttonclass"
                    OnClick="@(() => NavigationManager.NavigateTo("/checkout"))">
             Checkout
                    </MudButton>

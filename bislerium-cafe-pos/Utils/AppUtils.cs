@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace bislerium_cafe_pos.Utils
@@ -34,6 +35,12 @@ namespace bislerium_cafe_pos.Utils
         public static string GetOrderListFilePath()
         {
             return Path.Combine(GetDesktopDirectoryPath(), "orders.json");
+        }
+        //for checking numeric values in a string
+        public static bool IsNumeric(string input)
+        {
+            Regex numericRegex = new Regex("^[0-9]+$");
+            return numericRegex.IsMatch(input);
         }
     }
 }

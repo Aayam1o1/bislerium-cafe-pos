@@ -4,8 +4,27 @@
 @inject ISnackbar Snackbar
 
 
+<style>
+    .Buttonclass {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #3f91ff;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
 
-<h1>Edit Coffee Details</h1>
+        .Buttonclass:hover {
+            background-color: #2e84e1
+        }
+</style>
+
+<MudText Class="ml-4 mt-5" Typo="Typo.h6">Add Coffee</MudText>
+
 
 @if (!string.IsNullOrEmpty(_errorMessage))
 {
@@ -16,14 +35,15 @@
     <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-6 d-flex flex-column gap-y-3">
-                <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+                
                 <MudTextField @bind-Value="_coffeeName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
                 <MudTextField @bind-Value="_price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
+            <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
                 <div>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack" Class="mt-5 mr-5" OnClick="goBack">
+                    <MudButton Class="Buttonclass"  StartIcon="@Icons.Material.Filled.ArrowBack"  OnClick="goBack">
                         Back
                     </MudButton>
-                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="AddCoffeeDetails">
+                <MudButton Class="Buttonclass" DisableElevation="true" OnClick="AddCoffeeDetails">
                         Add Coffee
                     </MudButton>
                 </div>

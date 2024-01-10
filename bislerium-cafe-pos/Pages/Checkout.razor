@@ -5,46 +5,80 @@
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
-<h1>checkout</h1>
+<style>
+    .Buttonclass {
+        width: 170px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #FFC061;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
+
+        .Buttonclass:hover {
+            background-color: #F89500
+        }
+
+    .SecondButton {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+       
+    }
+</style>
+
 
 @if (_page == 1)
 {
-    <h4>Please Enter your Phone Number to verify Membership</h4>
 
-    @if (!String.IsNullOrEmpty(_errorMessage))
-    {
-        <MudAlert Severity="Severity.Error" Class="my-3">@_errorMessage</MudAlert>
-    }
+    <h5 class="my-4 ml-2">Please Enter your Phone Number to verify Membership</h5>
 
-    <div style="width:400px;" class="mt-20">
-        <MudTextField @bind-Value="_customerPhoneNumber" Label="Customer Phone Number" Variant="Variant.Outlined" Class="mb-5" Margin="Margin.Dense"></MudTextField>
+
+    <div style="width:400px;" class="ml-2">
+        <MudTextField @bind-Value="_customerPhoneNumber" Label="Customer Phone Number" Variant="Variant.Outlined" Class="my-3" InputType="@InputType.Number"></MudTextField>
+        @if (!String.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Class="my-2">@_errorMessage</MudAlert>
+        }
     </div>
 
-    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" @onclick="@(() => NavigationManager.NavigateTo("/order"))" Class="mr-5">Go Back</MudButton>
+    <MudButton Class="SecondButton" Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" @onclick="@(() => NavigationManager.NavigateTo("/order"))">Go Back</MudButton>
 
-    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="CheckMembership">Check Membership</MudButton>
+    <MudButton Class="Buttonclass" @onclick="CheckMembership">Check Membership</MudButton>
 }
 
 @if (_page == 2)
 {
     <MudText Typo="Typo.h6">Please Enter Customer Details</MudText>
 
-    @if (!string.IsNullOrEmpty(_errorMessage))
-    {
-        <MudAlert Severity="Severity.Error" Class="mt-3 mb-5">@_errorMessage</MudAlert>
-    }
+    
 
 
-    <div style="width:400px;" class="mt-5">
-        <MudTextField @bind-Value="_customer.CustomerName" Label="Customer Name" Variant="Variant.Outlined" Class="mb-5" Margin="Margin.Dense"></MudTextField>
-
-        <MudTextField @bind-Value="_customer.CustomerPhoneNumber" Label="Customer Phone Number" Variant="Variant.Outlined" Class="mb-5" Margin="Margin.Dense"></MudTextField>
+    <div style="width:400px;" class="mt-5 ml-2">
         
-        <MudTextField @bind-Value="_customer.CustomerAddress" Label="Customer Address" Variant="Variant.Outlined" Class="mb-5" Margin="Margin.Dense"></MudTextField>
+        <MudTextField @bind-Value="_customer.CustomerName" Label="Customer Name" Variant="Variant.Outlined" Class="mb-5"></MudTextField>
+
+        <MudTextField @bind-Value="_customer.CustomerPhoneNumber" Label="Customer Phone Number" Variant="Variant.Outlined" Class="mb-5" ></MudTextField>
+        
+        <MudTextField @bind-Value="_customer.CustomerAddress" Label="Customer Address" Variant="Variant.Outlined" Class="mb-5" ></MudTextField>
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Class="mt-3 mb-5">@_errorMessage</MudAlert>
+        }
     </div>
 
-    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" @onclick="@(() => _page--)" Class="mr-5">Go Back</MudButton>
-    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="validateCustomerDetails">Proceed</MudButton>
+    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" @onclick="@(() => _page--)" Class="SecondButton">Go Back</MudButton>
+    <MudButton Class="Buttonclass" @onclick="validateCustomerDetails">Proceed</MudButton>
 }
 @if (_page == 3)
 {
@@ -52,35 +86,32 @@
         <MudCard>
             <MudCardHeader>
                 <MudText Typo="Typo.h4" Align="Align.Center">Bislerum Cafe Bill</MudText>
-                <MudSpacer />
-                <MudText Typo="Typo.body1" Align="Align.Center">Date: @DateTime.Now</MudText>
-                </MudCardHeader>
+            </MudCardHeader>
+             <MudDivider />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">Customer Information:</MudText>
 
-                <MudDivider />
+                        <MudGrid Spacing="2">
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.body2">Customer Name: @_customer.CustomerName</MudText>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.body2">Phone Number: @_customer.CustomerPhoneNumber</MudText>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.body2">Address: @_customer.CustomerAddress</MudText>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.body1" Align="Align.Center">Date: @DateTime.Now</MudText>
+                            </MudItem> 
+                        </MudGrid>
 
+                    </MudCardContent>
 
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">Customer Information:</MudText>
-
-                    <MudGrid Spacing="3">
-                        <MudItem xs="12" md="4">
-                            <MudText Typo="Typo.body2">Customer Name: @_customer.CustomerName</MudText>
-                        </MudItem>
-                        <MudItem xs="12" md="4">
-                            <MudText Typo="Typo.body2">Phone Number: @_customer.CustomerPhoneNumber</MudText>
-                        </MudItem>
-                        <MudItem xs="12" md="4">
-                            <MudText Typo="Typo.body2">Address: @_customer.CustomerAddress</MudText>
-                        </MudItem>
-                    </MudGrid>
-
-
-                </MudCardContent>
-
-                <MudDivider />
+             <MudDivider />
 
 
-                <MudCardContent>
+            <MudCardContent>
                     <MudTable Items="@Elements"
                               Dense="@dense"
                               Hover="@hover"
@@ -145,9 +176,9 @@
             <MudDivider />
 
             <div class="py-5 pl-3">
-                <MudButton Color="Color.Default" Variant="Variant.Filled" Class="mr-5" OnClick="goBack">Go Back</MudButton>
+                <MudButton Color="Color.Default" Variant="Variant.Filled" Class="SecondButton" OnClick="goBack">Go Back</MudButton>
 
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="placeOrder">Place Order</MudButton>
+                <MudButton Class="Buttonclass" OnClick="placeOrder">Place Order</MudButton>
             </div>
 
         </MudCard>
@@ -156,7 +187,7 @@
 }
 
 @code {
-
+    //initalizing variables
     [CascadingParameter]
     private GlobalState _globalState { get; set; }
 
@@ -188,6 +219,11 @@
             _errorMessage = "Please enter your phone number";
             return;
         }
+        if (!AppUtils.IsNumeric(_customerPhoneNumber))
+        {
+            _errorMessage = "Please enter correct phone number";
+            return;
+        }
 
         _customer = CustomerService.GetCustomerByPhoneNumber(_customerPhoneNumber);
 
@@ -199,7 +235,20 @@
             _page++;
             return;
         }
-        _totalFreeCoffeeCount = CustomerService.TotalFreeCoffeeCount(_customer.CustomerPhoneNumber);
+
+        //get memebship benefits if customer is a member
+        int totalFreeCoffeeCount = CustomerService.TotalFreeCoffeeCount(_customer.CustomerPhoneNumber);
+
+        if (totalFreeCoffeeCount < 0)
+        {
+            _totalFreeCoffeeCount = 0;
+        }
+        else
+        {
+            _totalFreeCoffeeCount = totalFreeCoffeeCount - _customer.RedeemedCoffeeCount;
+        }
+
+
         bool isCustomerRegularMember = CustomerService.IfCustomerIsRegularMember(_customer.CustomerPhoneNumber);
 
         if(isCustomerRegularMember)
@@ -262,7 +311,7 @@
 
 
             OrderService.placeOrder(order);
-
+            CustomerService.UpdateRedeemedCoffeeCount(_customer.CustomerPhoneNumber, _customer.RedeemedCoffeeCount);
             Snackbar.Add("Order is Placed Sucessfully", Severity.Success);
 
             _globalState.OrderItems = new List<OrderItems>();
@@ -284,8 +333,7 @@
         //Converting double to integer
         int redeemedCoffeeCount = (int)membershipBenefits["redeemedCoffeeCount"];
         _discountAmount = membershipBenefits["discount"];
-
-        CustomerService.UpdateRedeemedCoffeeCount(_customer.CustomerPhoneNumber, redeemedCoffeeCount);
+        _customer.RedeemedCoffeeCount = redeemedCoffeeCount;
 
         Snackbar.Add($"{redeemedCoffeeCount} coffees are redeemed.", Severity.Success);
     }

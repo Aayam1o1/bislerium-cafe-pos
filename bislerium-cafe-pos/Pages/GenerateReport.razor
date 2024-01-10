@@ -86,8 +86,7 @@
             // PDF  Generation
             QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
             PdfReportDocument document = new PdfReportDocument(_report);
-            string filePath = Path.Combine(AppUtils.GetDesktopDirectoryPath(), "Report.PDF");
-            document.GeneratePdf(filePath);
+            string filePath = Path.Combine(AppUtils.GetDesktopDirectoryPath(), $"{new Random().Next(1, 100000).ToString()}_Report.PDF"); document.GeneratePdf(filePath);
 
             Snackbar.Add("Reports is sucessfully generated. Please look into the saved folder", Severity.Success);
 

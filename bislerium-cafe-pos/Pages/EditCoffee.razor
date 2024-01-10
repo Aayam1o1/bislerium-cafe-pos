@@ -3,14 +3,37 @@
 @inject CoffeeServices CoffeeServices
 @inject ISnackbar Snackbar
 
+<style>
+    .Buttonclass {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background-color: #3f91ff;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.2s;
+    }
 
+        .Buttonclass:hover {
+            background-color: #2e84e1
+        }
 
-<h1>Edit Coffee Details</h1>
+    .SecondButton {
+        width: 150px;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 10px;
+    }
+</style>
 
-@if (!string.IsNullOrEmpty(_errorMessage))
-{
-    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-}
+<MudText Class="ml-4 mt-5" Typo="Typo.h6">Add Coffee</MudText>
+
 
 @if (_coffee != null)
 {
@@ -20,11 +43,16 @@
                 <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
                 <MudTextField @bind-Value="_coffee.CoffeeName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
                 <MudTextField @bind-Value="_coffee.Price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
+
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+                }
                 <div>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack" Class="mt-5 mr-5" OnClick="goBack">
+                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" StartIcon="@Icons.Material.Filled.ArrowBack" Class="SecondButton" OnClick="goBack">
                         Back
                     </MudButton>
-                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="UpdateCoffeeDetails">
+                    <MudButton Class="Buttonclass" OnClick="UpdateCoffeeDetails">
                         Update Coffee
                     </MudButton>
                 </div>

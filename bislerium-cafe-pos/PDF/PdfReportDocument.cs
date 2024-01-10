@@ -71,7 +71,8 @@ namespace bislerium_cafe_pos.PDF
 
                 column.Item().Text(pdfTitleName).Style(pdftitleStyle);
 
-                column.Item().PaddingTop(7).Element(TableForMostPurchased);
+                column.Item().PaddingTop(7).Element(HeadingForTopCoffees);
+                column.Item().PaddingTop(7).Element(MostPurchasedCoffesTable);
 
                 // Sales Transactions
                 column.Item().PaddingTop(30).Element(SalesTransactionsHeader);
@@ -79,32 +80,32 @@ namespace bislerium_cafe_pos.PDF
 
             });
         }
-        void TableForMostPurchased(IContainer Container)
-        {
-            Container.Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(290);
-                    columns.RelativeColumn();
-                });
+        //void TableForMostPurchased(IContainer Container)
+        //{
+        //    Container.Table(table =>
+        //    {
+        //        table.ColumnsDefinition(columns =>
+        //        {
+        //            columns.ConstantColumn(290);
+        //            columns.RelativeColumn();
+        //        });
 
-                table.Header(header =>
-                {
-                    //Add-Ons heading
-                    header.Cell().Element(HeadingForTopAddOnsItems);
+        //        table.Header(header =>
+        //        {
+        //            //Add-Ons heading
+        //            header.Cell().Element(HeadingForTopAddOnsItems);
 
-                    //Coffee heading
-                    header.Cell().Element(HeadingForTopCoffees);
-                });
+        //            //Coffee heading
+        //            header.Cell().Element(HeadingForTopCoffees);
+        //        });
 
-                //Add-Ons Table
-                table.Cell().Element(PurchasedAddOnsItemTable);
+        //        //Add-Ons Table
+        //        table.Cell().Element(PurchasedAddOnsItemTable);
 
-                //Coffee Table
-                table.Cell().Element(MostPurchasedCoffesTable);
-            });
-        }
+        //        //Coffee Table
+        //        table.Cell().Element(MostPurchasedCoffesTable);
+        //    });
+        //}
 
         //header for sales transaction table
         void SalesTransactionsHeader(IContainer container)

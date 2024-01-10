@@ -3,10 +3,27 @@
 @inject CoffeeServices CoffeeServices
 @inject OrderItemServices OrderItemServices
 @inject ISnackbar Snackbar
+<style>
+    .Addbutton {
+            width: 150px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #3f91ff;
+            color: #ffffff;
+            font-weight: bold;
+            cursor: pointer;
+            
+            margin-top: 10px;
+            margin-bottom: 5px;
+            transition: background-color 0.2s;
+        }
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add"
-           class="mb-5" OnClick="@(() => addCoffee())"
-           Disabled="@isUserStaff">Add Coffee</MudButton>
+        .Addbutton:hover {
+            background-color: #2e84e1
+        }
+</style>
+
 
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
     <ToolBarContent>
@@ -36,6 +53,10 @@
             <MudTablePager />
         </PagerContent>
     </MudTable>
+
+    <MudButton Class ="Addbutton" EndIcon="@Icons.Material.Filled.Add"
+               OnClick="@(() => addCoffee())"
+               Disabled="@isUserStaff">Add Coffee</MudButton>
 
 @code 
     {
