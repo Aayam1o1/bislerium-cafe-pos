@@ -66,7 +66,7 @@ else
             </div>
            
             <MudSpacer />
-            @* <MudTextField Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField> *@
+           
         </ToolBarContent>
         <HeaderContent>
             <MudTh>Coffee Name</MudTh>
@@ -125,23 +125,21 @@ else
         Elements = _globalState.OrderItems;
         _totalAmount = OrderItemServices.CalculateTotalAmount(Elements);
 
-        // isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
-        // _globalState.AppBarTitle = "Items";
     }
-
+    //for clear cart button
     private void clearCart()
     {
         _globalState.OrderItems.Clear();
         Snackbar.Add("Cart is cleared successfully", Severity.Success);
     }
-
+    //for delete cart button
     private void DeleteCartItem(Guid orderItemID)
     {
         OrderItemServices.DeleteItemInOrderList(_globalState.OrderItems, orderItemID);
         _totalAmount = OrderItemServices.CalculateTotalAmount(Elements);
         Snackbar.Add($"The Item is removed from the cart", Severity.Success);
     }
-
+    //for managing quantity
     private void ManageQuantity(Guid orderItemID, string action)
     {
         OrderItemServices.ManageQuantityOrderItems(_globalState.OrderItems, orderItemID, action);
@@ -154,6 +152,5 @@ else
     private bool hover = true;
     private bool striped = true;
     private bool bordered = true;
-    // private string searchString1 = "";
-    // private string selectedItem1 = null;
+
 }

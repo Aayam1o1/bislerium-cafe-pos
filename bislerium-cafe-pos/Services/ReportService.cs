@@ -39,7 +39,7 @@ namespace bislerium_cafe_pos.Services
 
             //get all coffee and addon in seperate lsits
             List<OrderItems> coffeeList = allOrderitems.Where(item => item.OrderedItemType == "coffee").ToList();
-            List<OrderItems> addInsList = allOrderitems.Where(item => item.OrderedItemType == "add-in").ToList();
+            List<OrderItems> addOnsList = allOrderitems.Where(item => item.OrderedItemType == "add-on").ToList();
 
 
             //Get most ordered coffee
@@ -59,7 +59,7 @@ namespace bislerium_cafe_pos.Services
                 }).ToList();
 
             //Get most ordered addOns
-            List<OrderItems> mostOrderedAddOns = coffeeList
+            List<OrderItems> mostOrderedAddOns = addOnsList
             .GroupBy(addIn => addIn.OrderedItemName)
             .Select(group =>
             {

@@ -75,14 +75,17 @@ else
     private string _errorMessage { get; set; } = "";
     private Coffee _coffee { get; set; }
     private string _currentPassword { get; set; }
+    //for initalization
     protected override void OnInitialized()
     {
         _coffee = CoffeeServices.GetCoffeeDataById(coffeeID);
     }
+    //for go back button
     protected void goBack()
     {
         NavigationManager.NavigateTo("/coffee");
     }
+    //for update button
     protected void UpdateCoffeeDetails()
     {
         try

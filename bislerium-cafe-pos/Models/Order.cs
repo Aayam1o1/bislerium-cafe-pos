@@ -17,5 +17,7 @@ namespace bislerium_cafe_pos.Models
         public List<OrderItems> OrderItems { get; set; }
         public double OrderTotalAmount { get; set; }
         public double DiscountAmount { get; set; } = 0;
+
+        public bool ShowOrderItems { get; set; } = false;
     }
 }

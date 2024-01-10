@@ -1,5 +1,6 @@
 ﻿@page "/sales-report"
 @inject OrderService OrderServices
+@inject IDialogService DialogService
 
 
 <style>
@@ -15,13 +16,13 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Sales Transactions</MudText>
         <MudSpacer />
-        
     </ToolBarContent>
+        
     <HeaderContent>
         <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.OrderID)"> Order ID</MudTableSortLabel></MudTh>
         <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.CustomerName)"> Customer Name</MudTableSortLabel></MudTh>
         <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.CustomerPhoneNumber)"> Customer Phone Number</MudTableSortLabel></MudTh>
-        <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.EmployeeUserName)"> Employee Username</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.CustomerPhoneNumber)"> Ordered Item Quantity</MudTableSortLabel></MudTh>
         <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.OrderDateTime)"> Order DateTime</MudTableSortLabel></MudTh>
         <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.OrderTotalAmount)"> Order Total</MudTableSortLabel></MudTh>
         <MudTh> <MudTableSortLabel SortBy="new Func<Order, object>(x => x.DiscountAmount)"> Discount Amount</MudTableSortLabel></MudTh>
@@ -33,16 +34,7 @@
                 <MudText Size="Size.Small">@context.CustomerName</MudText>
             </MudTd>
             <MudTd DataLabel="Phone Number" Class="table-row">@context.CustomerPhoneNumber</MudTd>
-            <MudTd DataLabel="Employee Name" Class="table-row">
-                @if (context.EmployeeUserName == "admin")
-            {
-                <MudText Size="Size.Small">@context.EmployeeUserName.ToLower()</MudText>
-            }
-            else
-            {
-                <MudText Size="Size.Small">@context.EmployeeUserName.ToLower()</MudText>
-            }
-        </MudTd>
+            <MudTd DataLabel="Phone Number" Class="table-row">@context.OrderItems.Count</MudTd>
         <MudTd DataLabel="DateTime" Class="table-row">@context.OrderDateTime</MudTd>
             <MudTd DataLabel="Total Amount" Class="table-row">Rs.@context.OrderTotalAmount</MudTd>
             <MudTd DataLabel="Discount Amount" Class="table-row">Rs.@context.DiscountAmount</MudTd>
@@ -53,7 +45,7 @@
             <MudTablePager />
         </PagerContent>
     </MudTable>
-@code {
+    @code {
     [CascadingParameter] private GlobalState _globalSate { get; set; }
 
     private List<Order> _orders { get; set; } = new();
@@ -62,8 +54,8 @@
     private bool hover = true;
     private bool striped = true;
     private bool bordered = true;
+   
     
-
     private IEnumerable<Order> Elements = new List<Order>();
 
     protected override void OnInitialized()
@@ -72,8 +64,7 @@
         
     }
 
-    
-
+    //for filtring within table
     private bool FilterFunc(Order element, string searchString)
     {
         if (string.IsNullOrWhiteSpace(searchString))
@@ -88,8 +79,6 @@
         if (element.CustomerPhoneNumber.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        if (element.EmployeeUserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
 
         if (element.OrderDateTime.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -102,4 +91,5 @@
 
         return false;
     }
+
 }

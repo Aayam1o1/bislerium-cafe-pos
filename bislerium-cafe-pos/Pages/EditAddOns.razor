@@ -35,10 +35,6 @@
 
 <MudText Class="ml-4 mt-5" Typo="Typo.h6">Edit Add-Ons</MudText>
 
-@if (!string.IsNullOrEmpty(_errorMessage))
-{
-    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-}
 
 @if (_addOnItem != null)
 {
@@ -48,6 +44,11 @@
                 <MudTextField @bind-Value="_addOnItem.AddOnsName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
                 <MudTextField @bind-Value="_addOnItem.Price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
                 <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+                }
+
                 <div>
                     <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" StartIcon="@Icons.Material.Filled.ArrowBack" Class="SecondButton" OnClick="goBack">
                         Back
@@ -80,10 +81,12 @@ else
     {
         _addOnItem = AddOnServices.GetAddOnItemDataById(addOnItemID);
     }
+    //for back button
     protected void goBack()
     {
         NavigationManager.NavigateTo("/addons-items");
     }
+    //for update button
     protected void UpdateCoffeeDetails()
     {
         try

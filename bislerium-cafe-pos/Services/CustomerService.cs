@@ -94,7 +94,7 @@ namespace bislerium_cafe_pos.Services
             //retunss the total order count for a regular memeber
             return totalOrderCount >= 26;
         }
-
+        //for total freee coffee redemption calculation
         public int TotalFreeCoffeeCount (string customerPhoneNumber)
         {
             List <Order> orders = _orderServices.GetOrdersFromJson();

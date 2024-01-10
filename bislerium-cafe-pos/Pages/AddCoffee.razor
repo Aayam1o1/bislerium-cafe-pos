@@ -36,10 +36,7 @@
 <MudText Class="ml-4 mt-5" Typo="Typo.h6">Add Coffee</MudText>
 
 
-@if (!string.IsNullOrEmpty(_errorMessage))
-{
-    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-}
+
 
 
     <div class="container-fluid mt-5">
@@ -49,6 +46,10 @@
                 <MudTextField @bind-Value="_coffeeName" Label="Coffee Type" Variant="Variant.Outlined"></MudTextField>
                 <MudTextField @bind-Value="_price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
             <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
                 <div>
                 <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" StartIcon="@Icons.Material.Filled.ArrowBack" Class="SecondButton" OnClick="goBack">
                     Back
@@ -79,6 +80,7 @@
     {
         NavigationManager.NavigateTo("/coffee");
     }
+    //adding coffe details functionality
     protected void AddCoffeeDetails()
     {
         try

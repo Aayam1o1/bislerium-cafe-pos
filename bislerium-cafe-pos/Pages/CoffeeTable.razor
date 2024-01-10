@@ -76,30 +76,30 @@
 
 
     private IEnumerable<Coffee> Elements = new List<Coffee>();
-
+    
     protected override void OnInitialized()
     {
         Elements = CoffeeServices.GetCoffeeTableFromJson();
         isUserStaff = _globalState.CurrentUser.Role.ToString() == "staff";
     }
-
+    //for edit button
     private void edit(Guid coffeeId)
     {
         NavigationManager.NavigateTo($"/coffee-Table/{coffeeId}");
     }
-
+    //fir add button
     private void addCoffee()
     {
         NavigationManager.NavigateTo($"/add-coffee");
     }
-
+    //for add to cart button
     private void AddItemInCart(Guid coffeeID, double coffeePrice, string coffeeName)
     {
         OrderItemServices.AddItemInOrderList(_globalState.OrderItems, coffeeID, coffeeName, "coffee", coffeePrice);
         Snackbar.Add($"{coffeeName} is added to the cart", Severity.Success);
 
     }
-
+    //for delete button
     private void handleDelete(Guid coffeeID)
     {
         Elements = CoffeeServices.DeleteCoffeeName(coffeeID);

@@ -245,7 +245,7 @@
         //get memebship benefits if customer is a member
         int totalFreeCoffeeCount = CustomerService.TotalFreeCoffeeCount(_customer.CustomerPhoneNumber);
 
-        if (totalFreeCoffeeCount < 0)
+        if (totalFreeCoffeeCount <= 0)
         {
             _totalFreeCoffeeCount = 0;
         }
@@ -317,7 +317,11 @@
 
 
             OrderService.placeOrder(order);
-            CustomerService.UpdateRedeemedCoffeeCount(_customer.CustomerPhoneNumber, _customer.RedeemedCoffeeCount);
+            
+            if (_totalFreeCoffeeCount != 0)
+            {
+                CustomerService.UpdateRedeemedCoffeeCount(_customer.CustomerPhoneNumber, _customer.RedeemedCoffeeCount);
+            }
             Snackbar.Add("Order is Placed Sucessfully", Severity.Success);
 
             _globalState.OrderItems = new List<OrderItems>();

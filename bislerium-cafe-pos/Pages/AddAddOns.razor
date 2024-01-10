@@ -36,10 +36,7 @@
 
 <MudText Class="ml-4 mt-5" Typo="Typo.h6">Add Add-Ons</MudText>
 
-@if (!string.IsNullOrEmpty(_errorMessage))
-{
-    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-}
+
 
 
 <div class="container-fluid mt-5">
@@ -49,6 +46,11 @@
             <MudTextField @bind-Value="_addOns" Label="Add Ons" Variant="Variant.Outlined"></MudTextField>
             <MudTextField @bind-Value="_price" Label="Price" Variant="Variant.Outlined" InputType="@InputType.Number"></MudTextField>
             <MudTextField @bind-Value="_currentPassword" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
+            @* display error message *@
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
             <div>
                 <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Default" StartIcon="@Icons.Material.Filled.ArrowBack" Class="SecondButton" OnClick="goBack">
                     Back
@@ -75,11 +77,12 @@
     private string _currentPassword { get; set; }
     private double _price { get; set; }
 
-
+    //for go back button
     protected void goBack()
     {
         NavigationManager.NavigateTo("/addons-items");
     }
+    //add on details functionality
     protected void AddAddOnsDetails()
     {
         try

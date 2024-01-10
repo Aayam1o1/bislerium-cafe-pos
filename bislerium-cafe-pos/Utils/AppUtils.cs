@@ -14,11 +14,6 @@ namespace bislerium_cafe_pos.Utils
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Bislerium_cw_db");
         }
 
-        public static string GetAppUsersFilePath()
-        {
-            return Path.Combine(GetDesktopDirectoryPath(), "users.json");
-        }
-
         public static string GetCoffeeFilePath()
         {
             return Path.Combine(GetDesktopDirectoryPath(), "coffee.json");
@@ -31,7 +26,7 @@ namespace bislerium_cafe_pos.Utils
         {
             return Path.Combine(GetDesktopDirectoryPath(), "customers.json");
         }
-
+        
         public static string GetOrderListFilePath()
         {
             return Path.Combine(GetDesktopDirectoryPath(), "orders.json");

@@ -15,6 +15,7 @@ using IContainer = QuestPDF.Infrastructure.IContainer;
 
 namespace bislerium_cafe_pos.PDF
 {
+    //
     public class PdfReportDocument : IDocument
     {
         public Report ReportObj;
@@ -39,9 +40,10 @@ namespace bislerium_cafe_pos.PDF
                 page.Content().Element(Content);
             });
         }
+        //developing the header for the pdf
         void Header(IContainer container)
         {
-            var pdfTitleStyle = TextStyle.Default.FontSize(20).SemiBold().FontColor(Colors.Blue.Medium);
+            var pdfTitleStyle = TextStyle.Default.FontSize(20).SemiBold().FontColor(Colors.BlueGrey.Medium);
 
             string pdfTitleName = $"Bislerium Cafe {ReportObj.ReportType} Sales Transaction Report - ({ReportObj.ReportDate})";
 
@@ -56,6 +58,7 @@ namespace bislerium_cafe_pos.PDF
                 });
             });
         }
+        //developing the body part for the pdf
         void Content(IContainer container)
         {
             container.PaddingVertical(20).Column(column =>
@@ -79,32 +82,7 @@ namespace bislerium_cafe_pos.PDF
 
             });
         }
-        //void TableForMostPurchased(IContainer Container)
-        //{
-        //    Container.Table(table =>
-        //    {
-        //        table.ColumnsDefinition(columns =>
-        //        {
-        //            columns.ConstantColumn(290);
-        //            columns.RelativeColumn();
-        //        });
-
-        //        table.Header(header =>
-        //        {
-        //            //Add-Ons heading
-        //            header.Cell().Element(HeadingForTopAddOnsItems);
-
-        //            //Coffee heading
-        //            header.Cell().Element(HeadingForTopCoffees);
-        //        });
-
-        //        //Add-Ons Table
-        //        table.Cell().Element(PurchasedAddOnsItemTable);
-
-        //        //Coffee Table
-        //        table.Cell().Element(MostPurchasedCoffesTable);
-        //    });
-        //}
+        
 
         //header for sales transaction table
         void SalesTransactionsHeader(IContainer container)
@@ -184,6 +162,7 @@ namespace bislerium_cafe_pos.PDF
                 }
             });
         }
+        //heading for add on tables
         void HeadingForTopAddOnsItems(IContainer container)
         {
             var pdftitleStyle = TextStyle.Default.FontSize(12).SemiBold();
